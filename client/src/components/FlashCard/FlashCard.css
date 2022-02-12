@@ -1,0 +1,16 @@
+.card {
+    width: 40vw;
+    height: 200px;
+    margin-top: 50px;
+    background-color: palegoldenrod;
+    display: flex;
+}
+
+img {
+    margin: 10px;
+}
+
+p {
+    color: brown;
+    margin: 10px;
+}
