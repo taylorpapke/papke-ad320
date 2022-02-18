@@ -37,9 +37,9 @@ app.get('/', (req, res) => {
 // Get an individual card by id
 
 app.get('/cards/:id', async (req, res) => {
-  const card = await Deck.findById(req.params.id)
+  const card = await Deck.findOne({'cards._id':req.params.id})
   if (card){
-    res.send(card)
+    res.status(200).send(card.cards.slice(0,1))
   } else {
     res.sendStatus(404)
   }
@@ -48,7 +48,7 @@ app.get('/cards/:id', async (req, res) => {
 // Get all cards for a deck, with the option to paginate results
 
 app.get('/decks/:id/cards', async (req, res) => {
-  //const limit = req.query.limit
+  const limit = req.query.limit
   const deck = await Deck.findById(req.params.id)
   if (deck) {
     res.send(deck.cards.slice(0, 5))
@@ -59,10 +59,10 @@ app.get('/decks/:id/cards', async (req, res) => {
 
 // Get a deck by id
 
-app.get('decks/:id', async (req, res) => {
+app.get('/decks/:id', async (req, res) => {
   const deck = await Deck.findById(req.params.id)
-  if (deck) {
-    res.send(deck)
+  if(deck) {
+  res.status(200).send(deck)
   } else {
     res.sendStatus(404)
   }
@@ -70,8 +70,8 @@ app.get('decks/:id', async (req, res) => {
 
 // Get a deck by user
 
-app.get('users/:id', async (req, res) => {
-  const user = await User.decks.findById(req.params.id)
+app.get('/users/:id', async (req, res) => {
+  const user = await Deck.findOne({'userId' : req.params.id})
   if (user) {
     res.send(user)
   } else {
@@ -81,24 +81,42 @@ app.get('users/:id', async (req, res) => {
 
 // Create a deck
 
-app.post('decks/:id', async (req, res) => {
-  const deck = await Deck.findById(req.params.id)
-  if (deck) {
-    res.send(deck)
-  } else {
-    res.sendStatus(404)
+app.post('/decks', async (req, res) => {
+  const deckRequest = req.body
+  console.log('request body ', deckRequest)
+  if (deckRequest.userId) {
+    const deck = await Deck.findById(deckRequest.userId)
+    if (deck) {
+      deck.push({
+        name: deckRequest.name,
+        size: deckRequest.size,
+        userId: deckRequest.userId,
+        cards: deckRequest.cards
+      })
+      deck.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Create a card
 
-app.post('cards/:id', async (req, res) => {
-  const card = await Deck.findById(req.params.id)
-  if (card) {
-    res.send(card)
-  } else {
-    res.sendStatus(404)
+app.post('/cards', async (req, res) => {
+  const cardRequest = req.body
+  console.log('request body ', cardRequest)
+  if (cardRequest.deckId) {
+    const deck = await Deck.findById(cardRequest.deckId)
+    if (deck) {
+      deck.cards.push({
+        frontImage: cardRequest.frontImage,
+        frontText: cardRequest.frontText,
+        backImage: cardRequest.backImage,
+        backText: cardRequest.backText
+      })
+      deck.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Create a user
@@ -148,7 +166,7 @@ app.put('users/:id', async (req, res) => {
 // Delete a card
 
 app.delete('cards/:id', async (req, res) => {
-  const card = await Deck.findById(req.params.id)
+  const card = await Deck.deleteOne({'cards/_id' : req.params.id})
   if (card) {
     res.send(card)
   } else {
@@ -179,11 +197,15 @@ app.delete('users/:id', async (req, res) => {
 })
 
 const cardsById = async (req, res) => {
-  const card = await Deck.findOne()({
-    'cards._id': req.params.id
+ const card = await Deck.findOne({
+   'cards._id': req.params.id
   })
+  if(card) {
   res.status(200).send(card)
-}
+  } else {
+    res.sendStatus(404)
+  }
+ }
 
 //app.get('/cards/:id', cardsById)
 
@@ -191,42 +213,6 @@ const isUrl = (value) => {
   const re = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
   return re.test(value)
 }
-
-app.post('/cards', async (req, res) => {
-  const cardRequest = req.body
-  
-  if ((!cardRequest.frontImage && !cardRequest.frontText) || 
-    (!cardRequest.backImage && !cardRequest.backText)) {
-    res.status(400).send('Card data incomplete')
-  }
-
-  if ((frontImage && !isUrl(frontImage)) || (backImage && !isUrl(backImage))) {
-    res.status(400).send('Image fields must be valid URLs')
-  }
-
-  if (!cardRequest.deckId) {
-    res.status(400).send('Deck ID is required')
-  }
-
-  try {
-    const deck = await Deck.findById(cardRequest.deckId)
-    if (deck) {
-      deck.cards.push({
-        frontImage: cardRequest.frontImage,
-        frontText: cardRequest.frontText,
-        backImage: cardRequest.backImage,
-        backText: cardRequest.backText
-      })
-      await deck.save()
-      res.sendStatus(204)
-    } else {
-      res.sendStatus(404)
-    }
-  } catch (err) {
-    console.log(`error in creating card ${err}`)
-    res.sendStatus(502)
-  }
-})
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`)
