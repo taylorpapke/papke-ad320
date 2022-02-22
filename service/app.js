@@ -85,9 +85,9 @@ app.post('/decks', async (req, res) => {
   const deckRequest = req.body
   console.log('request body ', deckRequest)
   if (deckRequest.userId) {
-    const deck = await Deck.findById(deckRequest.userId)
+    const deck = await User.findById(deckRequest.userId)
     if (deck) {
-      deck.push({
+      Deck.push({
         name: deckRequest.name,
         size: deckRequest.size,
         userId: deckRequest.userId,
@@ -121,52 +121,88 @@ app.post('/cards', async (req, res) => {
 
 // Create a user
 
-app.post('users/:id', async (req, res) => {
-  const user = await User.findById(req.params.id)
-  if (user) {
-    res.send(user)
-  } else {
-    res.sendStatus(404)
+app.post('/users', async (req, res) => {
+  const userRequest = req.body
+  console.log('request body ', userRequest)
+  if (userRequest.userId) {
+    const user = await User.findById(userRequest.userId)
+    if (user) {
+      User.push({
+        displayName: userRequest.displayName,
+        email: userRequest.email,
+        joined: userRequest.joined,
+        active: userRequest.active,
+      })
+      User.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Update a card
 
-app.put('cards/:id', async (req, res) => {
-  const card = await Deck.findById(req.params.id)
-  if (card) {
-    res.send(card)
-  } else {
-    res.sendStatus(404)
+app.put('/cards/:id', async (req, res) => {
+  const cardRequest = req.body
+  console.log('request body ', cardRequest)
+  if (cardRequest.deckId) {
+    const deck = await Deck.findById(cardRequest.deckId)
+    if (deck) {
+      deck.cards.push({
+        frontImage: cardRequest.frontImage,
+        frontText: cardRequest.frontText,
+        backImage: cardRequest.backImage,
+        backText: cardRequest.backText
+      })
+      deck.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Update a deck
 
-app.put('decks/:id', async (req, res) => {
-  const deck = await Deck.findById(req.params.id)
-  if (deck) {
-    res.send(deck)
-  } else {
-    res.sendStatus(404)
+app.put('/decks/:id', async (req, res) => {
+  const deckRequest = req.body
+  console.log('request body ', deckRequest)
+  if (deckRequest.userId) {
+    const deck = await User.findById(deckRequest.userId)
+    if (deck) {
+      Deck.push({
+        name: deckRequest.name,
+        size: deckRequest.size,
+        userId: deckRequest.userId,
+        cards: deckRequest.cards
+      })
+      deck.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Update a user
 
-app.put('users/:id', async (req, res) => {
-  const user = await User.findById(req.params.id)
-  if (user) {
-    res.send(user)
-  } else {
-    res.sendStatus(404)
+app.put('/users/:id', async (req, res) => {
+  const userRequest = req.body
+  console.log('request body ', userRequest)
+  if (userRequest.userId) {
+    const user = await User.findById(userRequest.userId)
+    if (user) {
+      User.push({
+        displayName: userRequest.displayName,
+        email: userRequest.email,
+        joined: userRequest.joined,
+        active: userRequest.active,
+      })
+      User.save()
+    }
   }
+  res.sendStatus(502)
 })
 
 // Delete a card
 
-app.delete('cards/:id', async (req, res) => {
-  const card = await Deck.deleteOne({'cards/_id' : req.params.id})
+app.delete('/cards/:id', async (req, res) => {
+  const card = await Deck.cards._id.findByIdAndDelete(req.params.id)
   if (card) {
     res.send(card)
   } else {
@@ -176,8 +212,8 @@ app.delete('cards/:id', async (req, res) => {
 
 // Delete a deck and all associated cards
 
-app.delete('decks/:id', async (req, res) => {
-  const deck = await Deck.findById(req.params.id)
+app.delete('/decks/:id', async (req, res) => {
+  const deck = await Deck.deleteOne({'Deck.cards._id': req.params.id})
   if (deck) {
     res.send(deck)
   } else {
@@ -187,8 +223,8 @@ app.delete('decks/:id', async (req, res) => {
 
 // Delete a user
 
-app.delete('users/:id', async (req, res) => {
-  const user = await User.findById(req.params.id)
+app.delete('/users/:id', async (req, res) => {
+  const user = await User.deleteOne({'User': req.params.id})
   if (user) {
     res.send(user)
   } else {

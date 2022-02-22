@@ -4,7 +4,9 @@ const UserSchema = new mongoose.Schema({
     displayName: String,
     email: String,
     joined: String,
-    active: String
+    active: String,
+    userId: mongoose.Types.ObjectId
+    
 
   })
 
