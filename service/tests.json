@@ -1,0 +1,322 @@
+{
+	"info": {
+		"_postman_id": "04649d8b-c3aa-45b3-92d0-01d0c1dc9358",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get an individual card by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/cards/62160bae2bd6e089d63fe590",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards",
+						"62160bae2bd6e089d63fe590"
+					]
+				},
+				"description": "Get an individual card by id"
+			},
+			"response": []
+		},
+		{
+			"name": "get all cards for a deck, with the option to paginate results",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/decks/62160bac2bd6e089d63fe56d/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"decks",
+						"62160bac2bd6e089d63fe56d",
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a deck by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/decks/62160bac2bd6e089d63fe56d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"decks",
+						"62160bac2bd6e089d63fe56d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a deck by user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/users/62160bac2bd6e089d63fe56c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"62160bac2bd6e089d63fe56c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a deck",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"yes\",\n    \"size\" : \"10\",\n    \"userId\" : \"62160bac2bd6e089d63fe56c\",\n    \"cards\" : \"[]\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/decks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"decks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a card",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"frontImage\": \"this\",\n    \"frontText\": \"that\",\n    \"backImage\": \"the\",\n    \"backText\": \"other\",\n    \"deckId\" : \"62139d8f0f4fb0de363ee8fd\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/cards",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"displayName\": \"yeah\",\n        \"email\": \"sure\",\n        \"joined\": \"ok\",\n        \"active\": \"um\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update a card",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"frontImage\": \"this\",\n    \"frontText\": \"that\",\n    \"backImage\": \"the\",\n    \"backText\": \"other\",\n    \"deckId\" : \"62160bac2bd6e089d63fe56d\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/cards/62160bae2bd6e089d63fe590",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards",
+						"62160bae2bd6e089d63fe590"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update a deck",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"yes\",\n    \"size\" : \"10\",\n    \"userId\" : \"62160bac2bd6e089d63fe56c\",\n    \"cards\" : \"[]\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/decks/62160bac2bd6e089d63fe56d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"decks",
+						"62160bac2bd6e089d63fe56d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update a user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"displayName\": \"yeah\",\n        \"email\": \"sure\",\n        \"joined\": \"ok\",\n        \"active\": \"um\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/users/620d8d29d2bc8d11423c38c8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"620d8d29d2bc8d11423c38c8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a card",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/cards/62139dbe32d3a30744f05557",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards",
+						"62139dbe32d3a30744f05557"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a deck and all associated cards",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/decks/62139d8f0f4fb0de363ee8fd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"decks",
+						"62139d8f0f4fb0de363ee8fd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete a user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/users/620d8d29d2bc8d11423c38c8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"620d8d29d2bc8d11423c38c8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

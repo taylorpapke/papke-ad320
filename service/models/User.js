@@ -5,9 +5,6 @@ const UserSchema = new mongoose.Schema({
     email: String,
     joined: String,
     active: String,
-    //userId: mongoose.Types.ObjectId
-    
-
   })
 
 export const User = mongoose.model('User', UserSchema)
