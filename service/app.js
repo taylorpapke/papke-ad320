@@ -81,21 +81,21 @@ app.get('/users/:id', async (req, res) => {
 
 // Create a deck
 
-app.post('/decks', async (req, res) => {
+app.post('/decks', (req, res) => {
   const deckRequest = req.body
   console.log('request body ', deckRequest)
-  if (deckRequest.userId) {
-    const deck = await User.findById(deckRequest.userId)
-    if (deck) {
-      Deck.push({
+  //if (deckRequest.userId) {
+    const deck = new Deck ({//.findById(deckRequest.userId)
+    //if (deck) {
+      //deck.push({
         name: deckRequest.name,
         size: deckRequest.size,
         userId: deckRequest.userId,
         cards: deckRequest.cards
       })
       deck.save()
-    }
-  }
+    //}
+  //}
   res.sendStatus(502)
 })
 
@@ -127,13 +127,13 @@ app.post('/users', async (req, res) => {
   if (userRequest.userId) {
     const user = await User.findById(userRequest.userId)
     if (user) {
-      User.push({
+      user.push({
         displayName: userRequest.displayName,
         email: userRequest.email,
         joined: userRequest.joined,
         active: userRequest.active,
       })
-      User.save()
+      user.save()
     }
   }
   res.sendStatus(502)
@@ -145,15 +145,15 @@ app.put('/cards/:id', async (req, res) => {
   const cardRequest = req.body
   console.log('request body ', cardRequest)
   if (cardRequest.deckId) {
-    const deck = await Deck.findById(cardRequest.deckId)
-    if (deck) {
-      deck.cards.push({
+    const card = await Deck.cards.findById(deckRequest.userId)
+    if (card) {
+     card.cards.push({
         frontImage: cardRequest.frontImage,
         frontText: cardRequest.frontText,
         backImage: cardRequest.backImage,
         backText: cardRequest.backText
       })
-      deck.save()
+      card.save()
     }
   }
   res.sendStatus(502)
@@ -165,9 +165,9 @@ app.put('/decks/:id', async (req, res) => {
   const deckRequest = req.body
   console.log('request body ', deckRequest)
   if (deckRequest.userId) {
-    const deck = await User.findById(deckRequest.userId)
+    const deck = await Deck.findById(deckRequest.userId)
     if (deck) {
-      Deck.push({
+      deck.push({
         name: deckRequest.name,
         size: deckRequest.size,
         userId: deckRequest.userId,
@@ -187,13 +187,13 @@ app.put('/users/:id', async (req, res) => {
   if (userRequest.userId) {
     const user = await User.findById(userRequest.userId)
     if (user) {
-      User.push({
+      user.push({
         displayName: userRequest.displayName,
         email: userRequest.email,
         joined: userRequest.joined,
         active: userRequest.active,
       })
-      User.save()
+      user.save()
     }
   }
   res.sendStatus(502)
@@ -202,18 +202,18 @@ app.put('/users/:id', async (req, res) => {
 // Delete a card
 
 app.delete('/cards/:id', async (req, res) => {
-  const card = await Deck.cards._id.findByIdAndDelete(req.params.id)
+  const card = await Deck.findOne({"cards._id" : req.params.id})
   if (card) {
-    res.send(card)
+      res.send(card)
   } else {
-    res.sendStatus(404)
+      res.sendStatus(404)
   }
 })
 
 // Delete a deck and all associated cards
 
 app.delete('/decks/:id', async (req, res) => {
-  const deck = await Deck.deleteOne({'Deck.cards._id': req.params.id})
+  const deck = await Deck.findByIdAndDelete(req.params.id)//Deck.deleteOne({'Deck.cards._id': req.params.id})
   if (deck) {
     res.send(deck)
   } else {

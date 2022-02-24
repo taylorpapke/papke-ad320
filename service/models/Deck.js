@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 
+
 // Creating a schema
 const CardSchema = new mongoose.Schema({
   frontImage: String,

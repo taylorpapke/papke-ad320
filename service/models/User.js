@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     email: String,
     joined: String,
     active: String,
-    userId: mongoose.Types.ObjectId
+    //userId: mongoose.Types.ObjectId
     
 
   })
