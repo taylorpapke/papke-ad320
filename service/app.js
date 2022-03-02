@@ -21,7 +21,7 @@ const port = 8000
 
 // Connect to MongoDB
 
-const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.0y9om.mongodb.net`
+const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.0y9om.mongodb.net/myFirstDatabase`
 try {
   await mongoose.connect(connectionString)
 } catch (err) {
