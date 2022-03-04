@@ -8,15 +8,20 @@ const CreateFlashcard = ({ userId, deckId }) => {
   const [formValue, setFormValue] = useState({})
   const [errors, setErrors] = useState({
     'frontImage': false,
-    'frontText': false
+    'frontText': false,
+    'backImage': false,
+    'backText': false
 
   })
 
   function validateProperty(fieldName, fieldValue) {
-    console.log("validateProperty", typeof fieldValue)
+    console.log('validateProperty', typeof fieldValue)
     const fieldValueTrimmed = fieldValue.trim()
     if (fieldValueTrimmed === '') {
-      setErrors(errors[fieldName] = 'error')
+      formValue.frontImage = ''
+      return false
+    } else {
+      return true
     }
   }
 
@@ -28,6 +33,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
       currentValues[event.target.name] = event.target.value
       setFormValue(currentValues)
     } else {
+      return true
     }
   }
   
@@ -36,17 +42,16 @@ const CreateFlashcard = ({ userId, deckId }) => {
     event.preventDefault()
     if(formValue.frontImage === '' || formValue.frontText === ''){
       alert("data is invalid")
-    } else {
-
-    
-    try {
-      const response = await axios.post(`http://localhost:8000/decks/${deckId}/cards`, formValue, { headers: { user: userId } })
-      console.log(`[createflashcard] response submit ${response.status}`)
-    } catch (err) {
-      console.log(`response error ${err.status}`) 
+    // } else {
+    //     try {
+    //       const response = await axios.post(`http://localhost:8000/decks/${deckId}/cards`, formValue, { headers: { user: userId } })
+    //       console.log(`[createflashcard] response submit ${response.status}`)
+    //   } catch (err) {
+    //       console.log(`response error ${err.status}`) 
+    //   }
     }
   }
-}
+  
 
   return (
     <Stack component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -61,6 +66,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
         onChange={handleChange}
         autoFocus
         error={errors.frontImage}
+        
       />
       <TextField
         margin="normal"
@@ -80,6 +86,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
         label="Back Image"
         name="backImage"
         onChange={handleChange}
+        error={errors.backImage}
       />
       <TextField
         margin="normal"
@@ -89,6 +96,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
         label="Back Text"
         id="backText"
         onChange={handleChange}
+        error={errors.backText}
       />
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
         Submit
