@@ -6,25 +6,47 @@ const CreateFlashcard = ({ userId, deckId }) => {
   // how can we use state here to make sure we're validating info
   console.log(`[CreateFlashcard] deckId is ${deckId}`)
   const [formValue, setFormValue] = useState({})
+  const [errors, setErrors] = useState({
+    'frontImage': false,
+    'frontText': false
+
+  })
+
+  function validateProperty(fieldName, fieldValue) {
+    console.log("validateProperty", typeof fieldValue)
+    const fieldValueTrimmed = fieldValue.trim()
+    if (fieldValueTrimmed === '') {
+      setErrors(errors[fieldName] = 'error')
+    }
+  }
 
   const handleChange = (event) => {
     event.preventDefault()
     console.log("[CreateFlashcard] onChange ", event)
-    const currentValues = formValue
-    currentValues[event.target.name] = event.target.value
-    setFormValue(currentValues)
+    if (validateProperty(event.target.name, event.target.value)) {
+      const currentValues = formValue
+      currentValues[event.target.name] = event.target.value
+      setFormValue(currentValues)
+    } else {
+    }
   }
   
   const handleSubmit = async (event) => {
     console.log("[CreateFlashcard] onSubmit ", event)
     event.preventDefault()
+    if(formValue.frontImage === '' || formValue.frontText === ''){
+      alert("data is invalid")
+    } else {
+
+    
     try {
       const response = await axios.post(`http://localhost:8000/decks/${deckId}/cards`, formValue, { headers: { user: userId } })
       console.log(`[createflashcard] response submit ${response.status}`)
     } catch (err) {
-      console.log(`response error ${err.status}`)
+      console.log(`response error ${err.status}`) 
     }
   }
+}
 
   return (
     <Stack component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -38,6 +60,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
         name="frontImage"
         onChange={handleChange}
         autoFocus
+        error={errors.frontImage}
       />
       <TextField
         margin="normal"
@@ -47,6 +70,7 @@ const CreateFlashcard = ({ userId, deckId }) => {
         label="Front Text"
         id="frontText"
         onChange={handleChange}
+        error={errors.frontText}
       />
       <TextField
         margin="normal"

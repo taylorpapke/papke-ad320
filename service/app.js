@@ -54,6 +54,8 @@ app.post(
   '/decks/:id/cards',
   body('frontImage').isURL(),
   body('frontText').not().isEmpty(),
+  body('backImage').isURL(),
+  body('backText').not().isEmpty(),
   createCard
 )
 
