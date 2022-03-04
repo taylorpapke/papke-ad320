@@ -40,15 +40,15 @@ const CreateFlashcard = ({ userId, deckId }) => {
   const handleSubmit = async (event) => {
     console.log("[CreateFlashcard] onSubmit ", event)
     event.preventDefault()
-    if(formValue.frontImage === '' || formValue.frontText === ''){
+    if(formValue.frontImage === '' || formValue.frontText === '' || formValue.backImage === '' || formValue.backText === ''){
       alert("data is invalid")
-    // } else {
-    //     try {
-    //       const response = await axios.post(`http://localhost:8000/decks/${deckId}/cards`, formValue, { headers: { user: userId } })
-    //       console.log(`[createflashcard] response submit ${response.status}`)
-    //   } catch (err) {
-    //       console.log(`response error ${err.status}`) 
-    //   }
+    } else {
+        try {
+          const response = await axios.post(`http://localhost:8000/decks/${deckId}/cards`, formValue, { headers: { user: userId } })
+          console.log(`[createflashcard] response submit ${response.status}`)
+      } catch (err) {
+          console.log(`response error ${err.status}`) 
+      }
     }
   }
   
