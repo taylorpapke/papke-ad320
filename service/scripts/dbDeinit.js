@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { Deck } from '../models/Deck.js'
+import { User } from '../models/User.js'
 
 const sleepAndQuit = new Promise((resolve) => {
   setTimeout(() => {
@@ -9,18 +9,18 @@ const sleepAndQuit = new Promise((resolve) => {
 })
 
 const deinitDB = async () => {
-  const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.0y9om.mongodb.net`
+  const connectionString = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.0y9om.mongodb.net/myFirstDatabase`
   try {
     await mongoose.connect(connectionString)
   } catch (err) {
     console.log('error ', err)
   }
 
-  await Deck.deleteMany({})
+  await User.deleteMany({})
 
   await sleepAndQuit
 
-  console.log('finished deleting decks')
+  console.log('finished deleting users')
 }
 
 deinitDB()
