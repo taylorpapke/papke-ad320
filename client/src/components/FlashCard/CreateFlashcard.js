@@ -1,9 +1,9 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { Button, Stack, TextField } from "@mui/material"
 import axios from 'axios'
+import { borderColor } from "@mui/system"
 
 const CreateFlashcard = ({ userId, deckId }) => {
-  // how can we use state here to make sure we're validating info
   console.log(`[CreateFlashcard] deckId is ${deckId}`)
   const [formValue, setFormValue] = useState({})
   const [errors, setErrors] = useState({
@@ -11,7 +11,6 @@ const CreateFlashcard = ({ userId, deckId }) => {
     'frontText': false,
     'backImage': false,
     'backText': false
-
   })
 
   function validateProperty(fieldName, fieldValue) {
